@@ -10,6 +10,7 @@
 %\usepackage[cp1250]{inputenc} 	% kodovani cestiny MS Windows
 %\usepackage[latin2]{inputenc} 	% kodovani cestiny Linux
 \usepackage[utf8]{inputenc}
+\usepackage{comment}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -57,6 +58,7 @@ In the next definition CVA is calculated as expectation of credit loss.
 \end{equation}
   where $R$ is recovery rate, $\hat{e_d}(t)$ is the discounted expectet exposure at time $t$ and $PD(t)$ is probability of default.
 \end{definition}
+%We can observe that CVA depends on the following components:
 In what follows, we specify the components of CVA. 
 The counterparty credit exposure $E(t)$ of the bank to a counterparty at time $t$ (hereafter simply exposure) is defined as the economic loss, incurred on all outstanding transactions with the counterparty if the counterparty defaults at $t$.
 Denote the value of the $i$-th instrument in the portfolio at time $t$ by  $V_i(t)$. 
@@ -75,10 +77,16 @@ For a counterparty portfolio with a netting agreement, the exposure is
 E(t)=\max\{V(t),0\}.
 \end{equation}
 
-Consider the stochastic discount factor process at time $t$, defined as 
+Discounting is a financial mechanism in which a future value is being recalculated to the present value.
+The discount factor, $D(t)$, is the factor by which a future cash flow must be multiplied in order to obtain the present value.
+
+Consider the stochastic??? discount factor process at time $t$ (for maturity $T$), defined as 
+%nemělo by T být spíš doba defaultu?
 \begin{equation}
-diskont
+D(t)=\frac{B(t)}{B(T)}=e^{-rt},
 \end{equation}
+where $r$ is risk-free rate of return.
+%spojité diskontování se v praxi napoužívá, ale usnaňuje výpočty
 
 \begin{equation}
 \hat{e}_d(t)=\E[D(t) E(t)].
@@ -86,13 +94,8 @@ diskont
 
 Next component of the equation \eqref{CVA} is default probability $PD(t)$ which desribes the credit-worthiness of a counterparty. 
 
-
-\section{Methods of Comparing Different Models}
-
-\subsection{Analysis of Deviance}
-
-\subsection{Information Criteria}
-\section{Applying Generalized Linear Models in Actuarial Science}
+Recovery rate is the value of unity less \textit{Loss given default (LGD)}, i.e. $R=1-~LGD$.
+The LGD is the percentage amount of the exposure expected to be lost if the counterparty defaults.
 
 \begin{table}
 \caption{Resulting CVA}
@@ -107,9 +110,14 @@ $\boldsymbol{4}$& 1 045.54\\
 $\boldsymbol{5}$&103 319.55 \\
 \hline
 \end{tabular}}
-
 \end{table}
 
+%\section{Methods of Comparing Different Models}
+%\subsection{Analysis of Deviance}
+%\subsection{Information Criteria}
+%\section{Applying Generalized Linear Models in Actuarial Science}
+
+\begin{comment}
 \begin{thebibliography}{99}
 \bibitem[Antonio and Beirlant(2005)]{antonio}
 ANTONIO Katrien, BEIRLANT Jan: Applications of generalized linear mixed models in actuarial statistics. {\it Insurance: Mathematics and Economics,} 2005.
@@ -138,7 +146,25 @@ OHLSSON Esbjörn, JOHANSSON Björn: {\it Non-life insurance pricing with general
 \bibitem[Wolny-Dominiak(2012)]{dominiak}
 WOLNY-DOMINIAK Alicja: Modeling of claim counts using data mining procedures in R CRAN In: RAMÍK, J. and STAVÁREK, D. (eds.) 
 {\it Proceedings of 30th International Conference Mathematical Methods in Economics.} Karviná: Silesian University, School of Business Administration, 2012, pp. 980-985.
-
 \end{thebibliography}
+\end{comment}
+
+\nocite{bouchaud2003theory} 
+\nocite{duffie2003intertemporal} 
+\nocite{etheridge2002course} 
+\nocite{hull} 
+\nocite{pykhtin2010} 
+\nocite{gregory2010} 
+\nocite{brigo2014} 
+\nocite{hull2012cva} 
+\nocite{arora2012} 
+\nocite{jilek2000} 
+\nocite{canabarro2003measuring} 
+
+\nocite{}  %umisti do literatury i necitovanou polozku a \nocite{*} umisti do literatury vsechny polozky z bibtex databaze 
+
+%\bibliographystyle{plain}
+\bibliographystyle{abbrv}
+\bibliography{bibliography}
 
 \end{document}
