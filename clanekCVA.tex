@@ -46,6 +46,7 @@ As a motivation to why one would need a risk measure to capture shifts in credit
 In this section, we developed the basic methodology to compute CVA and descibe the basic terms.
 
 \subsection{Components of credit valuation adjustment and terminology}
+%přidat definici defaultu a zdůraznit, že veškeré úvahy počítají default v čyse $t$.
 The basic concepts and notation for counterparty credit risk and CVA will be shown in this section.
 Counterparty credit risk (CCR) is the risk that the counterparty defaults before the final settlement of a transaction's cash flows.
 CVA can be explained as the difference between the portfolio’s risk-free value and the portfolio’s true value taking into account the possibility of default of the counterparty.
@@ -80,17 +81,19 @@ E(t)=\max\{V(t),0\}.
 Discounting is a financial mechanism in which a future value is being recalculated to the present value.
 The discount factor, $D(t)$, is the factor by which a future cash flow must be multiplied in order to obtain the present value.
 
-Consider the stochastic??? discount factor process at time $t$ (for maturity $T$), defined as 
+Consider the discount factor at time $t$ (for maturity $T$), defined as 
 %nemělo by T být spíš doba defaultu?
 \begin{equation}
-D(t)=\frac{B(t)}{B(T)}=e^{-rt},
+D(t)=\frac{B_0}{B_t}=e^{-rt},
 \end{equation}
-where $r$ is risk-free rate of return.
+where $r$ is risk-free rate of return and $B_t$ is the value of risk free asset at time $t$. 
 %spojité diskontování se v praxi napoužívá, ale usnaňuje výpočty
 
+The discounted expected exposure at time $t$ conditional on the counterparty default at time $t$ is given by 
 \begin{equation}
 \hat{e}_d(t)=\E[D(t) E(t)].
 \end{equation}
+
 
 Next component of the equation \eqref{CVA} is default probability $PD(t)$ which desribes the credit-worthiness of a counterparty. 
 
