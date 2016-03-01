@@ -43,10 +43,10 @@
 As a motivation to why one would need a risk measure to capture shifts in credit spread, the Basel Committee estimate that about three fourths of the CCR losses during the financial crisis originate from CVA losses and not actual defaults.
 
 \section{Methods of credit valuation adjustment computation}
-In this section, we developed the basic methodology to compute CVA and descibe the basic terms.
+In this section, we developed the basic methodology to compute CVA and describe the basic terms.
 
 \subsection{Components of credit valuation adjustment and terminology}
-%přidat definici defaultu a zdůraznit, že veškeré úvahy počítají default v čyse $t$.
+%přidat definici defaultu a zdůraznit, že veškeré úvahy počítají default v čase $t$. - asi není nutné
 The basic concepts and notation for counterparty credit risk and CVA will be shown in this section.
 Counterparty credit risk (CCR) is the risk that the counterparty defaults before the final settlement of a transaction's cash flows.
 CVA can be explained as the difference between the portfolio’s risk-free value and the portfolio’s true value taking into account the possibility of default of the counterparty.
@@ -57,22 +57,23 @@ In the next definition CVA is calculated as expectation of credit loss.
  CVA=(1-R)\int_{0}^T \hat{e_d}(t)\dif PD(t),
  \label{CVA}
 \end{equation}
-  where $R$ is recovery rate, $\hat{e_d}(t)$ is the discounted expectet exposure at time $t$ and $PD(t)$ is probability of default.
+  where $R$ is recovery rate, $\hat{e_d}(t)$ is the discounted expected exposure at time $t$ and $PD(t)$ is probability of default.
 \end{definition}
 %We can observe that CVA depends on the following components:
 In what follows, we specify the components of CVA. 
+Recovery rate is the value of unity less \textit{Loss given default (LGD)}, i.e. $R=1-~LGD$.
+The LGD is the percentage amount of the exposure expected to be lost if the counterparty defaults.
+
 The counterparty credit exposure $E(t)$ of the bank to a counterparty at time $t$ (hereafter simply exposure) is defined as the economic loss, incurred on all outstanding transactions with the counterparty if the counterparty defaults at $t$.
 Denote the value of the $i$-th instrument in the portfolio at time $t$ by  $V_i(t)$. 
 The value of the counterparty portfolio is given by 
 \begin{equation}
 V(t)=\sum_{i=1}^N V_i(t).
 \end{equation}
-
 When netting is not allowed, the exposure E(t) is given by
 \begin{equation}
 E(t)=\sum_{i=1}^N\max\{V_i(t),0\}.
 \end{equation}
-
 For a counterparty portfolio with a netting agreement, the exposure is
 \begin{equation}
 E(t)=\max\{V(t),0\}.
@@ -80,25 +81,23 @@ E(t)=\max\{V(t),0\}.
 
 Discounting is a financial mechanism in which a future value is being recalculated to the present value.
 The discount factor, $D(t)$, is the factor by which a future cash flow must be multiplied in order to obtain the present value.
-
-Consider the discount factor at time $t$ (for maturity $T$), defined as 
+Consider the discount factor at time $t$% (for maturity $T$)
+, defined as 
 %nemělo by T být spíš doba defaultu?
 \begin{equation}
 D(t)=\frac{B_0}{B_t}=e^{-rt},
 \end{equation}
 where $r$ is risk-free rate of return and $B_t$ is the value of risk free asset at time $t$. 
 %spojité diskontování se v praxi napoužívá, ale usnaňuje výpočty
-
-The discounted expected exposure at time $t$ conditional on the counterparty default at time $t$ is given by 
+Hence, the discounted expected exposure at time $t$ conditional on the counterparty default at time $t$ is given by 
 \begin{equation}
 \hat{e}_d(t)=\E[D(t) E(t)].
 \end{equation}
 
-
-Next component of the equation \eqref{CVA} is default probability $PD(t)$ which desribes the credit-worthiness of a counterparty. 
-
-Recovery rate is the value of unity less \textit{Loss given default (LGD)}, i.e. $R=1-~LGD$.
-The LGD is the percentage amount of the exposure expected to be lost if the counterparty defaults.
+Next component of the equation \eqref{CVA} is default probability $PD(t)$ which describes the creditworthiness of a counterparty. 
+It provides an estimate of the likelihood that a borrower will be unable to meet its debt obligations.
+There are many alternatives for estimating the probability of default.
+The frequently used approach, taken by many banks, is to use external ratings agencies (such as S\&P, Fitch or Moody's) for estimating $PD$ from historical default experience.
 
 \begin{table}
 \caption{Resulting CVA}
@@ -114,6 +113,42 @@ $\boldsymbol{5}$&103 319.55 \\
 \hline
 \end{tabular}}
 \end{table}
+
+\begin{figure}[!htbp]
+  \centering 
+	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/YieldCurve.pdf}
+  \caption{Yield Curve}  \label{YieldCurve}
+\end{figure}
+
+\begin{figure}[!htbp]
+  \centering 
+	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/YieldCurveEvolution.pdf}
+  \caption{Yield Curve Evolution}  \label{YieldCurveEvolution}
+\end{figure}
+
+\begin{figure}[!htbp]
+  \centering 
+	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/DefaultProbability.pdf}
+  \caption{Default Probability}  \label{DefaultProbability}
+\end{figure}
+
+\begin{figure}[!htbp]
+  \centering 
+	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/TotalPortfoioValue.pdf}
+  \caption{Total Portfoio Value}  \label{TotalPortfoioValue}
+\end{figure}
+
+\begin{figure}[!htbp]
+  \centering 
+	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/PorfolioExposure.pdf}
+  \caption{Porfolio Exposure}  \label{PorfolioExposure}
+\end{figure}
+
+\begin{figure}[!htbp]
+  \centering 
+	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/CVAforEachCounterparty.pdf}
+  \caption{CVA for each counterparty}  \label{CVAforEachCounterparty}
+\end{figure}
 
 %\section{Methods of Comparing Different Models}
 %\subsection{Analysis of Deviance}
