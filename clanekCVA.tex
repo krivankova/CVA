@@ -11,6 +11,15 @@
 %\usepackage[latin2]{inputenc} 	% kodovani cestiny Linux
 \usepackage[utf8]{inputenc}
 \usepackage{comment}
+\usepackage{xcolor}
+  \usepackage{hyperref} % klikatelne odkazy v textu
+  \hypersetup{
+      colorlinks   = true, %Colours links instead of ugly boxes
+      urlcolor     = blue, %Colour for external hyperlinks
+      linkcolor    = red, %Colour of internal links
+      citecolor   = red, %Colour of citations
+      unicode=true % zajistí správné fungování háčků a čárek (češtiny) v PDF obsahu
+    }
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -24,6 +33,7 @@
 \newcommand{\ds}{\,\mathrm{d}s}
 \newcommand{\dt}{\,\mathrm{d}t}
 \newcommand{\dW}{\,\mathrm{d}W}
+\newcommand{\dr}{\,\mathrm{d}r}
 \newcommand{\PR}{\,\mathrm{P}}
 
 \begin{document}
@@ -49,7 +59,7 @@ In this section, we developed the basic methodology to compute CVA and describe 
 %přidat definici defaultu a zdůraznit, že veškeré úvahy počítají default v čase $t$. - asi není nutné
 The basic concepts and notation for counterparty credit risk and CVA will be shown in this section.
 Counterparty credit risk (CCR) is the risk that the counterparty defaults before the final settlement of a transaction's cash flows.
-CVA can be explained as the difference between the portfolio’s risk-free value and the portfolio’s true value taking into account the possibility of default of the counterparty.
+CVA can be explained as the difference between the portfolio's risk-free value and the portfolio's true value taking into account the possibility of default of the counterparty.
 In the next definition CVA is calculated as expectation of credit loss.
 \begin{definition}
  \textit{The credit valuation adjustment} is defined as
@@ -77,6 +87,7 @@ E(t)=\sum_{i=1}^N\max\{V_i(t),0\}.
 For a counterparty portfolio with a netting agreement, the exposure is
 \begin{equation}
 E(t)=\max\{V(t),0\}.
+\label{totalExposure}
 \end{equation}
 
 Discounting is a financial mechanism in which a future value is being recalculated to the present value.
@@ -94,13 +105,127 @@ Hence, the discounted expected exposure at time $t$ conditional on the counterpa
 \hat{e}_d(t)=\E[D(t) E(t)].
 \end{equation}
 
-Next component of the equation \eqref{CVA} is default probability $PD(t)$ which describes the creditworthiness of a counterparty. 
+Next component of the equation \eqref{CVA} is \textit{Probability of Default}, $PD(t)$ which describes the creditworthiness of a counterparty. 
 It provides an estimate of the likelihood that a borrower will be unable to meet its debt obligations.
+\textcolor{red}{The PD udává v procentech s jakou pravděpodobností dojde k selhání klienta během jednoho roku.}
 There are many alternatives for estimating the probability of default.
-The frequently used approach, taken by many banks, is to use external ratings agencies (such as S\&P, Fitch or Moody's) for estimating $PD$ from historical default experience.
+The frequently used approach, taken by many banks, is to use external ratings agencies (such as S\&P, Fitch or Moody's) for estimating PD from historical default experience.
+
+
+\section{Results}
+The numerical illustration of the calculation of CVA will be introduced in this section. We work with data set of interest rate swaps from the year 2015. These data come from a bank operating in the Czech Republic. The data contains information about five vanilla interest rate swaps and each of them is associated with different counterparty. \textcolor{red}{Asi by to chtělo více informací o datech.}
+
+\subsection{Initial yield curve}
+In order to evaluate the swaps, is necessary to describe a discount curve. The initial discount curve can be obtain by a linear interpolation of the risk free interest rates of different maturities. The initial rates were found at the web page of PATRIA (\href{URL}{http://www.patria.cz/kurzy/CZK/5Y/irs/graf.html}) and we can see them in the table \ref{rates}. \textcolor{red}{dát sem odkaz na stránku, Leni?} The interest rate shorter than one year were extracted from PRIBOR rates on October 30th, 2015. 
+The picture \ref{YieldCurve} shows the initial yield curve at settlement date which was built from the initial rates in the table \ref{rates}.
+\begin{table}
+\caption{Initial rates}
+\scalebox{1}{\begin{tabular}{|c |c|}
+\hline
+\textbf{Maturity (years)} &\textbf{Rate (\%)}\\ 
+\hline
+0.25 & 0.14  \\ 
+0.5 &  0.16  \\
+1 & 0.21 \\
+2& 0.25\\
+3&0.28\\
+4&0.33\\
+5&0.40\\
+6&0.47\\
+7&0.56\\
+8&0.65\\
+9&0.75\\
+10&0.83\\
+12&0.99\\
+15&1.16\\
+20&1.27\\
+\hline
+\end{tabular}}
+\label{rates}
+\end{table}
+
+
+\begin{figure}[!htbp]
+  \centering 
+	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/YieldCurve.pdf}
+  \caption{Yield Curve}  \label{YieldCurve}
+\end{figure}
+
+\subsection{Interest rate simulation}
+The interest rate simulation is based on historical data of the three month PRIBOR rate, from 2. 1. 2014 to 24. 11. 2015.  
+The development of three month PRIBOR rate can be observed in the figure \ref{PRIBOR}.
+
+\begin{figure}[!htbp]
+  \centering 
+	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/PRIBOR.pdf}
+  \caption{The three month PRIBOR rate}  \label{PRIBOR}
+\end{figure}
+
+The well known interest rate evolution model, Hull-White one-factor model, will be used for modeling of the interest rate term structure. We can define this model by equation
+\begin{equation}
+\dr(t)=[\theta(t)-\alpha r]\dt+\sigma\dW,
+\label{H-Wmodel}
+\end{equation}
+where
+\begin{description}
+\item [$\dr$] The change in the interest rate after a small change in time, $\dt$.
+\item [$\alpha$   ] Mean reversion rate.
+\item [$\sigma$   ] Volatility of the interest rate.
+\item [$\dW$] A Wiener process.
+\item [$\theta(t)$] Drift function defined as
+\begin{equation}
+\theta(t)=F'_{t}(0,t)+\alpha F(0,t)+\frac{\sigma^2}{2 \alpha}(1-\e^{-2\alpha t}),
+\end{equation}
+\item[$F(0,t)$] Instantaneous forward rate at time $t$.
+\item[$F'_{t}(0,t)$] Partial derivative of $F$ with respect to time $t$.
+\end{description}
+The constants $\alpha$ and $\sigma$ are extracted from the historical three month PRIBOR rates.
+We use equation \eqref{H-Wmodel} to simulated the short interest rates.  We can expanded the entire interest rate curve from the short rate using
+\begin{eqnarray}
+R(t,T)&=&-\frac{1}{T-t}\ln A(t,T)+\frac{1}{T-t}B(t,T)r(t)\\
+\ln A(t,T)&=&\ln \frac{P(0,T)}{P(0,t)}+B(t,T)F(0,t)-\frac{1}{4\alpha^3}\sigma^2(\e^{-\alpha T}-\e^{-\alpha t})^2(\e^{2\alpha t}-1)  \nonumber\\
+B(t,T)&=&\frac{1-\e^{-\alpha(T-t)}}{\alpha}.\nonumber
+\end{eqnarray}
+The large number of simulations was made. 
+The example of yield surfaces obtained in one interest rate simulation is posible to observe in the Figure \ref{YieldCurveEvolution}.
+\begin{figure}[!htbp]
+  \centering 
+	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/YieldCurveEvolution.pdf}
+  \caption{ One Possible Scenario of Yield Curve Evolution}  \label{YieldCurveEvolution}
+\end{figure}
+For each scenarios the swaps are priced at each future simulation date. 
+
+\subsection{Probability of default}
+We assume that the wait time for default of a counterparty is a random variable $X$ with exponential distribution. Then the cumulative distribution function of this variable can be define as
+\begin{equation}
+F(x)= P(X\leq x)= \left\{ \begin{array}{r@{\quad}c}
+    1-\e^{-\lambda x}, & x \geq 0 \\
+    0, & x \leq 0 \\ \end{array} \right.
+    \label{exponentialdistr}
+\end{equation}
+where $\lambda>0$ is the parameter of the distribution. Probability of default of the counterparty during one year we denote $PD$. Then 
+\begin{equation}
+PD=P(X\leq 1)=1-\e^{-\lambda}.
+\label{PD}
+\end{equation}
+If we use value of PD from \textcolor{red}{odkud bereme PD, Leni?}  $\lambda$ could be estimate from \eqref{PD} 
+\begin{eqnarray}
+PD&=&1-\e^{-\lambda} \nonumber \\
+\lambda&=&-\ln(1-PD).
+\end{eqnarray}
+Then we can construct probability curve for each counterparty. It is possible to observed them in the Figure \ref{DefaultProbability}.
+
+\begin{figure}[!htbp]
+  \centering 
+	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/DefaultProbability.pdf}
+  \caption{Default Probability Curves}  \label{DefaultProbability}
+\end{figure}
+
+
+\subsection{Computation of CVA} 
+Let consider the exposure is independent of default. Then total exposure of all contracts can be computed on the bases of equation \eqref{totalExposure}. The bank has estimated recovery rate $R=40\%$. \textcolor{red}{Leni, jaká je vaše recovery rate?}. Now we have everything for the CVA calculation according to the equation \eqref{CVA}. The resulting values of CVA for each counterparty can be observed in the Table \ref{resultingCVA}.
 
 \begin{table}
-\caption{Resulting CVA}
 \scalebox{1}{\begin{tabular}{|c |r|}
 \hline
 \textbf{Counterparty} &\textbf{CVA (in CZK)}\\ 
@@ -112,26 +237,14 @@ $\boldsymbol{4}$& 1 045.54\\
 $\boldsymbol{5}$&103 319.55 \\
 \hline
 \end{tabular}}
+\vspace{0,5cm}
+\caption{Resulting CVA}
+\label{resultingCVA}
 \end{table}
 
-\begin{figure}[!htbp]
-  \centering 
-	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/YieldCurve.pdf}
-  \caption{Yield Curve}  \label{YieldCurve}
-\end{figure}
 
-\begin{figure}[!htbp]
-  \centering 
-	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/YieldCurveEvolution.pdf}
-  \caption{Yield Curve Evolution}  \label{YieldCurveEvolution}
-\end{figure}
 
-\begin{figure}[!htbp]
-  \centering 
-	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/DefaultProbability.pdf}
-  \caption{Default Probability}  \label{DefaultProbability}
-\end{figure}
-
+\begin{comment}
 \begin{figure}[!htbp]
   \centering 
 	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/TotalPortfoioValue.pdf}
@@ -149,6 +262,10 @@ $\boldsymbol{5}$&103 319.55 \\
 	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/CVAforEachCounterparty.pdf}
   \caption{CVA for each counterparty}  \label{CVAforEachCounterparty}
 \end{figure}
+\end{comment}
+
+
+
 
 %\section{Methods of Comparing Different Models}
 %\subsection{Analysis of Deviance}
