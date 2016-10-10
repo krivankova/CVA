@@ -51,8 +51,21 @@
 
 \section{Introduction}
 As a motivation to why one would need a risk measure to capture shifts in credit spread, the Basel Committee estimate that about three fourths of the CCR losses during the financial crisis originate from CVA losses and not actual defaults.
+\hfill
+\newline
+\newline
+Od roku 2015 předepisuje Basel III bankám povinost počítat kapitalový požadavek pro riziko Credit Valuation Adjustment (CVA).
+Současná situace na banovním trhu vyvíjí na banky velký tlak hledat nové možnosti jak dosáhnout zisku.
+Bežné způsoby tvorby zisku v současnosti selhávají.
+Na trhu můžeme pozorovat nejen nízké až záporné úrokové sazby, ale i konkurenční boj o klienty, který přináší neustálý tlak na snižování bankovních poplatků a poskytování téměř nerentabilní klientských úvěrů.
+Banky proto hledají nové možnosti, jak snižovat náklady jako jsou například opravné položky k úvěrům klientů nebo k finančním derivátům.
+Jednou z možností může být hledání způsobu jak CVA modelovat tak, aby dodržely předepsané standardy a zároveň dosáhly co nejmešího dopadu na jejich zisk. 
 
-\section{Methods of credit valuation adjustment computation}
+Banky často používají triviální parametrické modely, které jsou ale nastaveny velmi konzervativně kvůli rizikové obezřetnosti.
+Předpokládáme, že sofistikovanější model by mohl přinést nižší CVA a tudíž i nižší kapitálový požadavek pro banku. 
+
+
+\section{Methods of credit valuation adjustment computation} 
 In this section, we developed the basic methodology to compute CVA and describe the basic terms.
 
 \subsection{Components of credit valuation adjustment and terminology}
@@ -107,7 +120,7 @@ Hence, the discounted expected exposure at time $t$ conditional on the counterpa
 
 Next component of the equation \eqref{CVA} is \textit{Probability of Default}, $PD(t)$ which describes the creditworthiness of a counterparty. 
 It provides an estimate of the likelihood that a borrower will be unable to meet its debt obligations.
-\textcolor{red}{The PD udává v procentech s jakou pravděpodobností dojde k selhání klienta během jednoho roku.}
+%\textcolor{red}{The PD udává v procentech s jakou pravděpodobností dojde k selhání klienta během jednoho roku.}
 There are many alternatives for estimating the probability of default.
 The frequently used approach, taken by many banks, is to use external ratings agencies (such as S\&P, Fitch or Moody's) for estimating PD from historical default experience.
 
@@ -115,8 +128,28 @@ The frequently used approach, taken by many banks, is to use external ratings ag
 \section{Results}
 The numerical illustration of the calculation of CVA will be introduced in this section. We work with data set of interest rate swaps from the year 2015. These data come from a bank operating in the Czech Republic. The data contains information about five vanilla interest rate swaps and each of them is associated with different counterparty. \textcolor{red}{Asi by to chtělo více informací o datech.}
 
+\begin{table}[!htbp]
+\centering
+\caption{Variables in a data set}  \label{variable}
+\scalebox{1}{
+\begin{tabular}{l l} 
+\hline
+Notation & Name of Variable  \\
+ \hline \hline
+ID &Counterparty ID\\
+principal &Principal of swap \\
+maturity & Maturity date of swap  \\
+LegRateReceiving & Interest rate received by bank\\
+LegRatePaying & Interest rate paid by bank\\
+period & Period of paying\\
+\hline
+\end{tabular}}
+\end{table}
+
+
 \subsection{Initial yield curve}
-In order to evaluate the swaps, is necessary to describe a discount curve. The initial discount curve can be obtain by a linear interpolation of the risk free interest rates of different maturities. The initial rates were found at the web page of PATRIA (\href{URL}{http://www.patria.cz/kurzy/CZK/5Y/irs/graf.html}) and we can see them in the table \ref{rates}. \textcolor{red}{dát sem odkaz na stránku, Leni?} The interest rate shorter than one year were extracted from PRIBOR rates on October 30th, 2015. 
+In order to evaluate the swaps, is necessary to describe a discount curve. The initial discount curve can be obtain by a linear interpolation of the risk free interest rates of different maturities. The initial rates were found at the web page of PATRIA (\href{URL}{http://www.patria.cz/kurzy/CZK/5Y/irs/graf.html}) and we can see them in the table \ref{rates}.% \textcolor{red}{dát sem odkaz na stránku, Leni?} 
+The interest rate shorter than one year were extracted from PRIBOR rates on October 30th, 2015. 
 The picture \ref{YieldCurve} shows the initial yield curve at settlement date which was built from the initial rates in the table \ref{rates}.
 \begin{table}
 \caption{Initial rates}
