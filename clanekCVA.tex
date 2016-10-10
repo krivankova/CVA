@@ -5,7 +5,7 @@
 
 \usepackage{graphicx} 		% balik pro vkladani obrazku
 \usepackage{amsmath, amsthm, amssymb}
-\usepackage{natbib}
+%\usepackage{natbib}
 
 %\usepackage[cp1250]{inputenc} 	% kodovani cestiny MS Windows
 %\usepackage[latin2]{inputenc} 	% kodovani cestiny Linux
@@ -54,12 +54,12 @@ As a motivation to why one would need a risk measure to capture shifts in credit
 \hfill
 \newline
 \newline
-Od roku 2015 předepisuje Basel III bankám povinost počítat kapitalový požadavek pro riziko Credit Valuation Adjustment (CVA).
-Současná situace na banovním trhu vyvíjí na banky velký tlak hledat nové možnosti jak dosáhnout zisku.
-Bežné způsoby tvorby zisku v současnosti selhávají.
+Od roku 2015 předepisuje Basel III bankám povinnost počítat kapitalový požadavek pro riziko Credit Valuation Adjustment (CVA).
+Současná situace na bankovním trhu vyvíjí na banky velký tlak hledat nové možnosti jak dosáhnout zisku.
+Běžné způsoby tvorby zisku v současnosti selhávají.
 Na trhu můžeme pozorovat nejen nízké až záporné úrokové sazby, ale i konkurenční boj o klienty, který přináší neustálý tlak na snižování bankovních poplatků a poskytování téměř nerentabilní klientských úvěrů.
 Banky proto hledají nové možnosti, jak snižovat náklady jako jsou například opravné položky k úvěrům klientů nebo k finančním derivátům.
-Jednou z možností může být hledání způsobu jak CVA modelovat tak, aby dodržely předepsané standardy a zároveň dosáhly co nejmešího dopadu na jejich zisk. 
+Jednou z možností může být hledání způsobu jak CVA modelovat tak, aby dodržely předepsané standardy a zároveň dosáhly co nejmenšího dopadu na jejich zisk. 
 
 Banky často používají triviální parametrické modely, které jsou ale nastaveny velmi konzervativně kvůli rizikové obezřetnosti.
 Předpokládáme, že sofistikovanější model by mohl přinést nižší CVA a tudíž i nižší kapitálový požadavek pro banku. 
@@ -126,7 +126,11 @@ The frequently used approach, taken by many banks, is to use external ratings ag
 
 
 \section{Results}
-The numerical illustration of the calculation of CVA will be introduced in this section. We work with data set of interest rate swaps from the year 2015. These data come from a bank operating in the Czech Republic. The data contains information about five vanilla interest rate swaps and each of them is associated with different counterparty. \textcolor{red}{Asi by to chtělo více informací o datech.}
+The numerical illustration of the calculation of CVA will be introduced in this section. 
+We work with data set of interest rate swaps from the year 2015.
+An \textit{interest rate swap (IRS)} is an agreement between two parties to exchange a interest rate cash flows on specified intervals and over a certain period of time. 
+These data come from a bank operating in the Czech Republic. 
+The data contains information about five vanilla interest rate swaps and each of them is associated with different counterparty. \textcolor{red}{Asi by to chtělo více informací o datech.}
 
 \begin{table}[!htbp]
 \centering
@@ -148,9 +152,9 @@ period & Period of paying\\
 
 
 \subsection{Initial yield curve}
-In order to evaluate the swaps, is necessary to describe a discount curve. The initial discount curve can be obtain by a linear interpolation of the risk free interest rates of different maturities. The initial rates were found at the web page of PATRIA (\href{URL}{http://www.patria.cz/kurzy/CZK/5Y/irs/graf.html}) and we can see them in the table \ref{rates}.% \textcolor{red}{dát sem odkaz na stránku, Leni?} 
+In order to evaluate the swaps, is necessary to describe a discount curve. The initial discount curve can be obtain by a linear interpolation of the risk free interest rates of different maturities. The initial rates were found at the web page of PATRIA (\href{URL}{http://www.patria.cz/kurzy/CZK/5Y/irs/graf.html}) and we can see them in the Table \ref{rates}.% \textcolor{red}{dát sem odkaz na stránku, Leni?} 
 The interest rate shorter than one year were extracted from PRIBOR rates on October 30th, 2015. 
-The picture \ref{YieldCurve} shows the initial yield curve at settlement date which was built from the initial rates in the table \ref{rates}.
+The Picture \ref{YieldCurve} shows the initial yield curve at settlement date which was built from the initial rates in the Table \ref{rates}.
 \begin{table}
 \caption{Initial rates}
 \scalebox{1}{\begin{tabular}{|c |c|}
@@ -194,7 +198,13 @@ The development of three month PRIBOR rate can be observed in the figure \ref{PR
   \caption{The three month PRIBOR rate}  \label{PRIBOR}
 \end{figure}
 
-The well known interest rate evolution model, Hull-White one-factor model, will be used for modeling of the interest rate term structure. We can define this model by equation
+The well known interest rate evolution model, Hull-White one-factor model, will be used for modeling of the interest rate term structure. 
+The Hull-White model is a one-factor model of the short rate $r(t)$, first published in \cite{hull1990pricing} and generalized later \cite{hull2001general}.
+The model assumes that short rates have a normal distribution, and that the short rates are subject to mean reversion. 
+Volatility is likely to be low when short rates are near zero, which is reflected in a larger mean reversion in the model. 
+The Hull-White model extends the Vasicek and Cox-Ingersoll-Ross (CIR) models.
+
+We can define this model by equation
 \begin{equation}
 \dr(t)=[\theta(t)-\alpha r]\dt+\sigma\dW,
 \label{H-Wmodel}
@@ -202,31 +212,41 @@ The well known interest rate evolution model, Hull-White one-factor model, will 
 where
 \begin{description}
 \item [$\dr$] The change in the interest rate after a small change in time, $\dt$.
-\item [$\alpha$   ] Mean reversion rate.
+\item [$\alpha$   ] Constant reversion speed.%Mean reversion rate.
 \item [$\sigma$   ] Volatility of the interest rate.
 \item [$\dW$] A Wiener process.
 \item [$\theta(t)$] Drift function defined as
 \begin{equation}
-\theta(t)=F'_{t}(0,t)+\alpha F(0,t)+\frac{\sigma^2}{2 \alpha}(1-\e^{-2\alpha t}),
+\theta(t)=\frac{\partial  F(0,t)}{\partial t}+\alpha F(0,t)+\frac{\sigma^2}{2 \alpha}(1-\e^{-2\alpha t}), %F'_{t}(0,t)+...
 \end{equation}
+where
 \item[$F(0,t)$] Instantaneous forward rate at time $t$.
-\item[$F'_{t}(0,t)$] Partial derivative of $F$ with respect to time $t$.
+%\item[$F'_{t}(0,t)$] Partial derivative of $F$ with respect to time $t$.
 \end{description}
+Instantaneous forward rate $F(0,t)$ is defined as
+\begin{equation}
+F(0,t)= \frac{\partial\ln  P(0,t)}{\partial t}
+\end{equation}
+where $ P(t,T)$ is price of a zero coupon bond at time $t$ with maturity at time $T$.
+
 The constants $\alpha$ and $\sigma$ are extracted from the historical three month PRIBOR rates.
-We use equation \eqref{H-Wmodel} to simulated the short interest rates.  We can expanded the entire interest rate curve from the short rate using
+We use equation \eqref{H-Wmodel} to simulated the short interest rates.  
+We can expand the entire interest rate curve from the short rate using
 \begin{eqnarray}
 R(t,T)&=&-\frac{1}{T-t}\ln A(t,T)+\frac{1}{T-t}B(t,T)r(t)\\
 \ln A(t,T)&=&\ln \frac{P(0,T)}{P(0,t)}+B(t,T)F(0,t)-\frac{1}{4\alpha^3}\sigma^2(\e^{-\alpha T}-\e^{-\alpha t})^2(\e^{2\alpha t}-1)  \nonumber\\
 B(t,T)&=&\frac{1-\e^{-\alpha(T-t)}}{\alpha}.\nonumber
 \end{eqnarray}
 The large number of simulations was made. 
-The example of yield surfaces obtained in one interest rate simulation is posible to observe in the Figure \ref{YieldCurveEvolution}.
+The example of yield surfaces obtained in one interest rate simulation is possible to observe in the Figure \ref{YieldCurveEvolution}.
 \begin{figure}[!htbp]
   \centering 
 	\includegraphics[width=6cm, clip, trim= 110 270 110 270]{IMG/YieldCurveEvolution.pdf}
   \caption{ One Possible Scenario of Yield Curve Evolution}  \label{YieldCurveEvolution}
 \end{figure}
 For each scenarios the swaps are priced at each future simulation date. 
+
+The main advantage of the Hull-White model is that it can be fitted exactly to the initial term structure of interest rates.
 
 \subsection{Probability of default}
 We assume that the wait time for default of a counterparty is a random variable $X$ with exponential distribution. Then the cumulative distribution function of this variable can be define as
@@ -348,6 +368,11 @@ WOLNY-DOMINIAK Alicja: Modeling of claim counts using data mining procedures in 
 \nocite{arora2012} 
 \nocite{jilek2000} 
 \nocite{canabarro2003measuring} 
+
+%\bibitem{hull1990pricing}
+%J.~Hull and A.~White.
+%\newblock Pricing interest-rate-derivative securities.
+%\newblock {\em Review of financial studies}, 3(4):573--592, 1990.
 
 \nocite{}  %umisti do literatury i necitovanou polozku a \nocite{*} umisti do literatury vsechny polozky z bibtex databaze 
 
