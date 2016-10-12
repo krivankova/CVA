@@ -199,9 +199,13 @@ The development of three month PRIBOR rate can be observed in the figure \ref{PR
 \end{figure}
 
 The well known interest rate evolution model, Hull-White one-factor model, will be used for modeling of the interest rate term structure. 
-The Hull-White model is a one-factor model of the short rate $r(t)$, first published in \cite{hull1990pricing} and generalized later \cite{hull2001general}.
-The model assumes that short rates have a normal distribution, and that the short rates are subject to mean reversion. 
-Volatility is likely to be low when short rates are near zero, which is reflected in a larger mean reversion in the model. 
+%The Hull-White model is a one-factor model of the short rate $r(t)$, first published in \cite{hull1990pricing} and generalized later \cite{hull2001general}.
+The model was first published by John Hull and Alan White in \cite{hull1990pricing} and generalized later in \cite{hull2001general}.
+%The need for an exact fit to the currently-observed yield curve, led Hull and White to the introduction of a time-varying parameter in the Vasicek model. 
+The requirement for more accurate fit to the currently-observed yield curve, led Hull and White to the introduction of a time variable parameter in the Vasicek model. 
+%The model assumes that short rates have a normal distribution, and that the short rates are subject to mean reversion.
+The model assumes that short rates have a normal distribution, and also that the short rates exhibit the mean reversion character. 
+%Volatility is likely to be low when short rates are near zero, which is reflected in a larger mean reversion in the model. 
 The Hull-White model extends the Vasicek and Cox-Ingersoll-Ross (CIR) models.
 
 We can define this model by equation
@@ -233,7 +237,8 @@ The constants $\alpha$ and $\sigma$ are extracted from the historical three mont
 We use equation \eqref{H-Wmodel} to simulated the short interest rates.  
 We can expand the entire interest rate curve from the short rate using
 \begin{eqnarray}
-R(t,T)&=&-\frac{1}{T-t}\ln A(t,T)+\frac{1}{T-t}B(t,T)r(t)\\
+%R(t,T)&=&-\frac{1}{T-t}\ln A(t,T)+\frac{1}{T-t}B(t,T)r(t)\\
+P(t,T)&=&A(t,T)\e^{-B(t,T)r(t)}\\
 \ln A(t,T)&=&\ln \frac{P(0,T)}{P(0,t)}+B(t,T)F(0,t)-\frac{1}{4\alpha^3}\sigma^2(\e^{-\alpha T}-\e^{-\alpha t})^2(\e^{2\alpha t}-1)  \nonumber\\
 B(t,T)&=&\frac{1-\e^{-\alpha(T-t)}}{\alpha}.\nonumber
 \end{eqnarray}
