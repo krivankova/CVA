@@ -42,13 +42,13 @@
 \author{KAFKOVÁ Silvie and KŘIVÁNKOVÁ Lenka}
 
 \begin{abstract}
-According to the Basel Committee's estimate three fourths of the counterparty credit risk losses during the financial crisis originate from Credit valuation adjustment's losses and not from actual defaults. Therefore Third Basel Accord has instructed banks to calculate capital requirement for risk of Credit valuation adjustment (CVA) from 2015. Banks are trying to model CVA to hold the prescribed standards and also reached the lowest possible impact on their profit. In this paper, we try to model CVA 
+According to the Basel Committee's estimate three fourths of the counterparty credit risk losses during the financial crisis originate from Credit valuation adjustment's losses and not from actual defaults. Therefore Third Basel Accord has instructed banks to calculate capital requirement for risk of Credit valuation adjustment (CVA) from 2015. Banks are trying to model CVA to hold the prescribed standards and also reached the lowest possible impact on their profit. In this paper, we try to model CVA by using methods that are in compliance with the prescribed standards and also achieve the smallest possible impact on the bank's earnings. To do so, the data set of interest rate swaps from the year 2015 is used. The interest rate term structure is simulated by Hull-White one-factor model and Monte Carlo methods. Than the probability of default for each counterparty is constructed. Safe leval of CVA is reached in spite of calculated CVA achieves a lower level than CVA previously used by bank. This allows a reduction of capital requirements for banks. All claculations are computed in Matlab enviroment which contains packages of financial mathematics and stats with the function for the Hull-White model and the function for the estimation of probability of default which are necessary for the computation of the CVA.
 
 
 \end{abstract}
 \maketitle
 
-\noindent\textbf{Keywords:} credit valuation adjustment, probability of default, interest rate swaps, Hull-White model, Monte Carlo simulations, credit exposure
+\noindent\textbf{Keywords:} credit valuation adjustment, probability of default, interest rate swaps, yield curve, Hull-White model, Monte Carlo simulations, credit exposure
 
 \bigskip
 
@@ -336,26 +336,17 @@ $\boldsymbol{5}$&103 319.55 \\
 %\begin{comment}
 \begin{thebibliography}{99}
 \bibitem{arora2012}
-N.~Arora, P.~Gandhi, and F.~A. Longstaff.
-\newblock Counterparty credit risk and the credit default swap market.
-\newblock {\em Journal of Financial Economics}, 103(2):280--293, 2012.
+ARRORA, N., GANDHI, P. and LONGSTAFF, F. A. 2012. Counterparty credit risk and the credit default swap market. \textit{Journal of Financial Economics}, 103(2):280--293.
 
 \bibitem{bouchaud2003theory}
-J.-P. Bouchaud and M.~Potters.
-\newblock {\em Theory of financial risk and derivative pricing: from
-  statistical physics to risk management}.
-\newblock Cambridge university press, 2003.
+BOUCHAUD, J.-P. and POTTERS, M. 2003. \textit{Theory of financial risk and derivative pricing: from statistical physics to risk management}. $2^{nd}$ edition. Cambridge: Cambridge University Press.
 
 \bibitem{brigo2014}
-D.~Brigo, A.~Capponi, and A.~Pallavicini.
-\newblock Arbitrage-free bilateral counterparty risk valuation under
-  collateralization and application to credit default swaps.
-\newblock {\em Mathematical Finance}, 24(1):125--146, 2014.
+BRIGO, D., CAPPONI, A. and PALLAVICINI, A. 2014. Arbitrage-free bilateral counterparty risk valuation under collateralization and application to credit default swaps. \textit{Mathematical Finance}, 24(1):125--146.
+
 
 \bibitem{canabarro2003measuring}
-E.~Canabarro and D.~Duffie.
-\newblock Measuring and marking counterparty risk.
-\newblock {\em Asset/Liability Management for Financial Institutions,
+CANABARRO E. and DUFFIE D. 2003. Measuring and marking counterparty risk. Asset/Liability Management for Financial Institutions,
   Institutional Investor Books}, 2003.
 
 \bibitem{duffie2003intertemporal}
