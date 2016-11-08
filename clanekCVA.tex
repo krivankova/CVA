@@ -20,6 +20,9 @@
       citecolor   = red, %Colour of citations
       unicode=true % zajistí správné fungování háčků a čárek (češtiny) v PDF obsahu
     }
+    
+\usepackage{natbib}
+\bibliographystyle{agsm}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -53,20 +56,27 @@ According to the Basel Committee's estimate three fourths of the counterparty cr
 \bigskip
 
 \section{Introduction}
-As a motivation to why one would need a risk measure to capture shifts in credit spread, the Basel Committee estimate that about three fourths of the CCR losses during the financial crisis originate from CVA losses and not actual defaults.
-\hfill
-\newline
-\newline
-Od roku 2015 předepisuje Basel III bankám povinnost počítat kapitalový požadavek pro riziko Credit Valuation Adjustment (CVA).
-Současná situace na bankovním trhu vyvíjí na banky velký tlak hledat nové možnosti jak dosáhnout zisku.
-Běžné způsoby tvorby zisku v současnosti selhávají.
-Na trhu můžeme pozorovat nejen nízké až záporné úrokové sazby, ale i konkurenční boj o klienty, který přináší neustálý tlak na snižování bankovních poplatků a poskytování téměř nerentabilní klientských úvěrů.
-Banky proto hledají nové možnosti, jak snižovat náklady jako jsou například opravné položky k úvěrům klientů nebo k finančním derivátům.
-Jednou z možností může být hledání způsobu jak CVA modelovat tak, aby dodržely předepsané standardy a zároveň dosáhly co nejmenšího dopadu na jejich zisk. 
+%As a motivation to why one would need a risk measure to capture shifts in credit spread, the Basel Committee estimate that about three fourths of the CCR losses during the financial crisis originate from CVA losses and not actual defaults.
+%\hfill
+%\newline
+%\newline
+%%Od roku 2015 předepisuje Basel III bankám povinnost počítat kapitalový požadavek pro riziko Credit Valuation Adjustment (CVA).
+%Současná situace na bankovním trhu vyvíjí na banky velký tlak hledat nové možnosti jak dosáhnout zisku.
+%Běžné způsoby tvorby zisku v současnosti selhávají.
+%Na trhu můžeme pozorovat nejen nízké až záporné úrokové sazby, ale i konkurenční boj o klienty, který přináší neustálý tlak na snižování bankovních poplatků a poskytování téměř nerentabilní klientských úvěrů.
+%Banky proto hledají nové možnosti, jak snižovat náklady jako jsou například opravné položky k úvěrům klientů nebo k finančním derivátům.
+%Jednou z možností může být hledání způsobu jak CVA modelovat tak, aby dodržely předepsané standardy a zároveň dosáhly co nejmenšího dopadu na jejich zisk. 
 
-Banky často používají triviální parametrické modely, které jsou ale nastaveny velmi konzervativně kvůli rizikové obezřetnosti.
-Předpokládáme, že sofistikovanější model by mohl přinést nižší CVA a tudíž i nižší kapitálový požadavek pro banku. 
+%?%Banky často používají triviální parametrické modely, které jsou ale nastaveny velmi konzervativně kvůli rizikové obezřetnosti.
+%?%Předpokládáme, že sofistikovanější model by mohl přinést nižší CVA a tudíž i nižší kapitálový požadavek pro banku. 
 
+The current situation in the banking market pressures banks to look for new opportunities to generate income.
+Common methods of making a profit are not as profitable as they were in the past.% do not work as well as in the past.
+We can observe not only a negative inter bank offered rates, but also competitive fight for clients, which causes strong pressure to decrease bank fees and almost unprofitable lending.
+The banks, therefore,  search for new possibilities how to decrease costs such as loan loss provission and credit valuation adjustment.One of the possibilities could be development of a new approach to CVA modeling respecting regulatory standards and simultaneously achieving maximal profit.
+
+Banks often use proprietary parametric models, which are, although, very conservatively set due to risk vigilance.
+We suppose that a more sophisticated model would bring lower CVA as well as lower capital requirement for a bank.
 
 \section{Methods of credit valuation adjustment computation} 
 In this section, we developed the basic methodology to compute CVA and describe the basic terms.
